@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">鑫视频</string>
+    <string name="privacy_policy">《隐私政策》</string>
+    <string name="disclaimer">《免责声明》</string>
+    <string name="contract_dialog_title">免责声明和隐私政策</string>
+    <string name="contract_dialog_message">\t\t在使用本应用之前，请您先阅读并了解《免责声明》和《隐私政策》。我们将严格按照上述协议为您提供服务，
+        保护您的信息安全，点击“同意”即表示您已阅读并同意全部条款，可以继续使用本应用。</string>
+</resources>
