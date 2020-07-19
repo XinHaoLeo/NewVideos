@@ -15,13 +15,25 @@
 
 package com.xin.newvideos.ui.fragment
 
-import androidx.viewpager.widget.ViewPager
+import android.annotation.SuppressLint
+import android.content.Intent
+import android.view.LayoutInflater
+import android.widget.LinearLayout
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.kongzue.dialog.v3.TipDialog
 import com.xin.newvideos.R
+import com.xin.newvideos.app.Constant
 import com.xin.newvideos.base.BaseMvpFragment
 import com.xin.newvideos.contract.HomeContract
+import com.xin.newvideos.http.bean.HomeBody
 import com.xin.newvideos.http.bean.HomeData
 import com.xin.newvideos.presenter.HomePresenter
+import com.xin.newvideos.ui.activity.VideoDetailsActivity
+import com.xin.newvideos.ui.adapter.HomeAdapter
+import com.xin.newvideoss.widget.ImageLoader
+import com.youth.banner.Banner
+import com.youth.banner.BannerConfig
+import com.youth.banner.Transformer
 import kotlinx.android.synthetic.main.fragment_home.*
 
 /**
@@ -40,22 +52,40 @@ import kotlinx.android.synthetic.main.fragment_home.*
  *@since : xinxiniscool@gmail.com
  *@desc :
  */
-class HomeFragment : BaseMvpFragment<HomeContract.View, HomePresenter>(), HomeContract.View,
-    ViewPager.OnPageChangeListener {
+class HomeFragment : BaseMvpFragment<HomeContract.View, HomePresenter>(), HomeContract.View {
 
-    private lateinit var mTitleList: ArrayList<String>
     private lateinit var mHomeData: HomeData
-    private var mHomePage = 0
+    private var mBodyList: ArrayList<HomeBody>? = null
+    private lateinit var mHomeAdapter: HomeAdapter
+    private lateinit var banner: Banner
 
     override fun initPresenter(): HomePresenter = HomePresenter()
 
     override fun initLayoutView(): Int = R.layout.fragment_home
 
+    @SuppressLint("InflateParams")
     override fun initData() {
-//        TipDialog.showWait(mActivity, "小鑫正在为您努力加载中...").setTipTime(5000)
-        mTitleList = ArrayList()
+        TipDialog.showWait(mActivity, "小鑫正在为您努力加载中...").setTipTime(5000)
         mPresenter.getHomeData()
-        vpHome.currentItem = 0
+        with(rvHome) {
+            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            setHasFixedSize(true)
+        }
+        mHomeAdapter = HomeAdapter(R.layout.item_home, mBodyList)
+        val headerGroup =
+            LayoutInflater.from(mActivity).inflate(R.layout.head_banner, null) as LinearLayout
+        banner = headerGroup.findViewById(R.id.banner)
+        with(banner) {
+            headerGroup.removeView(this)
+            mHomeAdapter.addHeaderView(this)
+        }
+        rvHome.adapter = mHomeAdapter
+        mHomeAdapter.setOnItemClickListener { _, _, position ->
+            val intent = Intent(mActivity, VideoDetailsActivity::class.java)
+            intent.putExtra(Constant.VIDEO_DETAILS_URl, mHomeAdapter.getItem(position).linkUrl)
+            intent.putExtra(Constant.VIDEO_DETAILS_TITLE, mHomeAdapter.getItem(position).title)
+            startActivity(intent)
+        }
     }
 
     override fun lazyLoadData() {
@@ -65,84 +95,50 @@ class HomeFragment : BaseMvpFragment<HomeContract.View, HomePresenter>(), HomeCo
     override fun showHomeData(homeData: HomeData) {
         TipDialog.dismiss()
         mHomeData = homeData
-//        initHomeTabData()
+        mHomeAdapter.setNewInstance(mHomeData.homeBodyList)
+        initBanner(mHomeData)
     }
 
-//    /**
-//     * 将viewPager+TabLayout绑定
-//     */
-//    private fun initHomeTabData() {
-//        mTitleList.add("首页推荐")
-//        for (i in mHomeData.bodyList.indices) {
-//            mTitleList.add(mHomeData.bodyList[i].title)
-//        }
-//        for (i in mTitleList.indices) {
-//            tabLayoutHome.addTab(tabLayoutHome.newTab().setText(mTitleList[i]))
-//        }
-//        for (i in mTitleList.indices) {
-//            val homeListFragment = HomeListFragment()
-//            mFragmentList.add(homeListFragment)
-//        }
-//        mFragmentList[0].setOnClickDataListener(this)
-//        vpHome.adapter = HomeAdapter(
-//            mActivity.supportFragmentManager,
-//            FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
-//        )
-//        tabLayoutHome.setupWithViewPager(vpHome)
-//        vpHome.currentItem = mHomePage
-//        vpHome.addOnPageChangeListener(this)
-//    }
-//
-//    override fun onClickData(title: String) {
-//        var position = 0
-//        for (i in mTitleList.indices) {
-//            if (title == mTitleList[i]) {
-//                position = i
-//            }
-//        }
-//        vpHome.currentItem = position
-//    }
+    private fun initBanner(homeData: HomeData) {
+        val bannerImages: MutableList<String> = ArrayList()
+        val bannerTitles: MutableList<String> = ArrayList()
+        val bannerUrl: MutableList<String> = ArrayList()
+        for (homeBanner in homeData.homeBannerList) {
+            with(homeBanner) {
+                bannerImages.add(imgUrl)
+                bannerTitles.add(title)
+                bannerUrl.add(linkUrl)
+            }
+        }
+        with(banner) {
+            setBannerStyle(BannerConfig.NUM_INDICATOR_TITLE)
+            setImageLoader(ImageLoader())
+            setImages(bannerImages)
+            setBannerAnimation(Transformer.DepthPage)
+            setBannerTitles(bannerTitles)
+            isAutoPlay(true)
+            setDelayTime(homeData.homeBannerList.size * 400)
+            setIndicatorGravity(BannerConfig.CENTER)
+            setOnBannerListener {
 
-    override fun onPageScrollStateChanged(state: Int) {
-
+            }
+            start()
+        }
     }
 
-    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-
+    override fun onStart() {
+        super.onStart()
+        banner.startAutoPlay()
     }
 
-    override fun onPageSelected(position: Int) {
-        mHomePage = position
+    override fun onStop() {
+        super.onStop()
+        banner.stopAutoPlay()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         mPresenter.cancel()
     }
-
-
-//    inner class HomeAdapter(fm: FragmentManager, behavior: Int) :
-//        FragmentPagerAdapter(fm, behavior) {
-//        override fun getItem(position: Int): Fragment {
-//            Log.d("Leo", "getItem:$position")
-//            val bundle = Bundle()
-//            if (position != 0) {
-//                bundle.putString(Constant.HOME_URL, mHomeData.bodyList[position - 1].detailUrl)
-//            } else {
-//                mFragmentList[position].setHomeData(mHomeData)
-//            }
-//            bundle.putInt(Constant.HOME_PAGE, position)
-//            mFragmentList[position].arguments = bundle
-//            return mFragmentList[position]
-//        }
-//
-//        override fun getCount(): Int = mTitleList.size
-//
-//        @Nullable
-//        override fun getPageTitle(position: Int): CharSequence? {
-//            return mTitleList[position]
-//        }
-//
-//    }
 
 }

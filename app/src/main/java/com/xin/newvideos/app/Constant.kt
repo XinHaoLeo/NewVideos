@@ -33,6 +33,9 @@ package com.xin.newvideos.app
 object Constant {
     const val BASE_URL = "https://www.6080w.com"
 
+    const val VIDEO_DETAILS_URl = "video_details_url"
+    const val VIDEO_DETAILS_TITLE = "video_details_title"
+
     //userAgent
     val UA = arrayOf(
         "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36",
@@ -73,5 +76,5 @@ object Constant {
     val HTTPS_PROXY_POOL = arrayOf(
         "http://10.10.1.10:3128",
         "http://172.18.101.221:1080"
-        )
+    )
 }

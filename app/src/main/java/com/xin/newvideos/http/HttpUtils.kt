@@ -74,6 +74,23 @@ object HttpUtils {
         }
     }
 
+    fun getVideoDetails(url: String,listener: OnHttpListener):Job{
+        return launchUi {
+            try {
+                val statusCode = statusCode(url)
+                Log.d(TAG, "getVideoDetails: statusCode=$statusCode")
+                if (statusCode == 200) {
+                    createConnectionGet(url).let { listener.onSuccess(it) }
+                } else {
+                    listener.onError("获取失败")
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                listener.onError(e.toString())
+            }
+        }
+    }
+
     private suspend fun createConnectionGet(url: String) = withContext(Dispatchers.IO) {
         createConnection(url).get()
     }

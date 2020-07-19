@@ -24,7 +24,7 @@ android {
     }
     applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "NewVideo.apk"
+            outputFileName = "NewVideos.apk"
         }
     }
 
@@ -64,6 +64,7 @@ dependencies {
     implementation 'com.kongzue.dialog_v3x:dialog:3.2.0'
     //图片加载库
     implementation 'com.github.bumptech.glide:glide:4.5.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.5.0'
     //仿崩溃
     implementation 'cat.ereza:customactivityoncrash:2.3.0'
     //RV库

@@ -60,38 +60,55 @@ object JsoupUtils {
                 bannerList.add(homeBanner)
             }
             homeData.homeBannerList = bannerList
-            val homeBody = HomeBody()
-            val homeRecommendTitle =
-                document.getElementsByClass("con3 star-bot").select("span").text()
-//            Log.d(TAG, "parseHomeData:homeRecommendTitle=$homeRecommendTitle")
-            homeBody.title = homeRecommendTitle
-            val homeBodyTypeList = ArrayList<HomeBodyType>()
             val select = document.getElementsByClass("star-pic-list-a")
             for (data in select) {
-                val homeBodyType = HomeBodyType()
+                val homeBody = HomeBody()
                 val linkUrl = Constant.BASE_URL + data.select("a[href]").attr("href")
                 val title = data.select("a[title]").attr("title")
                 val imgUrl = data.select("img[data-url]").attr("data-url")
 //                Log.d(TAG, "parseHomeData:imgUrl=$imgUrl")
 //                Log.d(TAG, "parseHomeData:linkUrl=$linkUrl")
 //                Log.d(TAG, "parseHomeData:title=$title")
-                homeBodyType.imgUrl = imgUrl
-                homeBodyType.linkUrl = linkUrl
-                homeBodyType.title = title
-                homeBodyTypeList.add(homeBodyType)
+                homeBody.imgUrl = imgUrl
+                homeBody.linkUrl = linkUrl
+                homeBody.title = title
+                bodyList.add(homeBody)
             }
-            val url =
-                document.getElementsByClass("teleplay-left fl").select("div[class]")[1].attr("href")
-            val title = document.getElementsByClass("teleplay-left fl")
-                .select("div[class]")[1].attr("title")
-            Log.d(TAG, "parseHomeData:url=$url")
-            Log.d(TAG, "parseHomeData:title=$title")
-            val es = document.getElementsByClass("splendid-tab fl")
-            Log.d(TAG, "parseHomeData:es=$es")
+            val bodyElements = document.getElementsByClass("teleplay-content-list").select("li")
+//            Log.d(TAG, "parseHomeData:size=${bodyElements.size}")
+//            Log.d(TAG, "parseHomeData:bodyElements=${bodyElements}")
+            for (data in bodyElements) {
+                val homeBody = HomeBody()
+                val linkUrl = Constant.BASE_URL + data.select("a[href]").attr("href")
+                val title = data.select("a[title]").attr("title")
+                val imgUrl = data.select("img[data-url]").attr("data-url")
+                val updateContent = data.getElementsByClass("tcl-pic4").text()
+                val subTitle = data.getElementsByClass("tcl-title").select("p").text()
+//                Log.d(TAG, "parseHomeData:imgUrl=$imgUrl")
+//                Log.d(TAG, "parseHomeData:linkUrl=$linkUrl")
+//                Log.d(TAG, "parseHomeData:title=$title")
+//                Log.d(TAG, "parseHomeData:updateContent=$updateContent")
+//                Log.d(TAG, "parseHomeData:subTitle=$subTitle")
+                homeBody.imgUrl = imgUrl
+                homeBody.linkUrl = linkUrl
+                homeBody.title = title
+                homeBody.updateContent = updateContent
+                homeBody.subTitle = subTitle
+                bodyList.add(homeBody)
+            }
+            homeData.homeBodyList = ArrayList(LinkedHashSet(bodyList))
+//            Log.d(TAG, "parseHomeData:$homeData")
         } catch (e: Exception) {
             e.printStackTrace()
         }
         return homeData
     }
 
+    fun parseVideoDetailsData(document: Document){
+        val detailsContentElements = document.getElementsByClass("synopsis")
+        val pZeroElement = detailsContentElements.select("p")[0]
+        val directorName = pZeroElement.select("a[target]").text()
+        val score = pZeroElement.select("em").first().text()
+        val pop = pZeroElement.getElementById("hits").text()
+    }
 }

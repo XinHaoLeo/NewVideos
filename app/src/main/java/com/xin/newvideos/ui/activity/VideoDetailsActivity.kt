@@ -13,7 +13,14 @@
  * limitations under the License.
  */
 
-package com.xin.newvideos.http.bean
+package com.xin.newvideos.ui.activity
+
+import com.xin.newvideos.R
+import com.xin.newvideos.app.Constant
+import com.xin.newvideos.base.BaseMvpActivity
+import com.xin.newvideos.contract.VideoDetailsContract
+import com.xin.newvideos.presenter.VideoDetailsPresenter
+import kotlinx.android.synthetic.main.activity_video_details.*
 
 /**
  *   █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
@@ -26,44 +33,25 @@ package com.xin.newvideos.http.bean
  *  ░ ░    ░░░ ░ ░ ░        ░ ░░ ░
  *           ░     ░ ░      ░  ░
  * @author : Leo
- * @date : 2020/7/12 18:07
+ * @date : 2020/7/19 18:14
  * @desc :
  * @since : xinxiniscool@gmail.com
  */
-class HomeBody {
-    var title: String = ""
-    var subTitle: String = ""
-    var imgUrl: String = ""
-    var linkUrl: String = ""
-    var updateContent: String = ""
+class VideoDetailsActivity : BaseMvpActivity<VideoDetailsContract.View, VideoDetailsPresenter>(),
+    VideoDetailsContract.View {
 
-    override fun toString(): String {
-        return "BodyTypeData(title='$title', subTitle='$subTitle', imgUrl='$imgUrl', linkUrl='$linkUrl', updateContent='$updateContent')"
+    private var mUrl: String? = ""
+
+    override fun initPresenter(): VideoDetailsPresenter = VideoDetailsPresenter()
+
+    override fun initLayoutView(): Int = R.layout.activity_video_details
+
+    override fun initData() {
+        mUrl = intent.getStringExtra(Constant.VIDEO_DETAILS_URl)
+        tvVideoDetailsTitle.text = intent.getStringExtra(Constant.VIDEO_DETAILS_TITLE)
     }
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
+    override fun showVideoDetailsData() {
 
-        other as HomeBody
-
-        if (title != other.title) return false
-        if (subTitle != other.subTitle) return false
-        if (imgUrl != other.imgUrl) return false
-        if (linkUrl != other.linkUrl) return false
-        if (updateContent != other.updateContent) return false
-
-        return true
     }
-
-    override fun hashCode(): Int {
-        var result = title.hashCode()
-        result = 31 * result + subTitle.hashCode()
-        result = 31 * result + imgUrl.hashCode()
-        result = 31 * result + linkUrl.hashCode()
-        result = 31 * result + updateContent.hashCode()
-        return result
-    }
-
-
 }

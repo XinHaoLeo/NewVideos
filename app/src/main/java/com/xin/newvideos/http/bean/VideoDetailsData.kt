@@ -16,7 +16,6 @@
 package com.xin.newvideos.http.bean
 
 /**
- *
  *   █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
  * ▓██   ▒ ██  ▓██▒▒██▀ ▀█   ██▄█▒        ██╔══██╗██║   ██║██╔════╝
  * ▒████ ░▓██  ▒██░▒▓█    ▄ ▓███▄░        ██████╔╝██║   ██║██║  ███╗
@@ -26,25 +25,22 @@ package com.xin.newvideos.http.bean
  *  ░     ░░▒░ ░ ░   ░  ▒   ░ ░▒ ▒░
  *  ░ ░    ░░░ ░ ░ ░        ░ ░░ ░
  *           ░     ░ ░      ░  ░
- *@author : Leo
- *@date : 2020/7/17 16:40
- *@since : xinxiniscool@gmail.com
- *@desc :
+ * @author : Leo
+ * @date : 2020/7/19 23:13
+ * @desc :
+ * @since : xinxiniscool@gmail.com
  */
-class HomeRecommend {
-    var title: String = ""
-    lateinit var homeRecommendDetailsList: ArrayList<HomeRecommendDetails>
+class VideoDetailsData {
+    var directorName: String = ""
+    var score: String = ""
+    var pop: String = ""
+    var actorName: String = ""
+    var typeName: String = ""
+    var area: String = ""
+    var language: String = ""
+    var year: String = ""
+    var summary: String = ""
     override fun toString(): String {
-        return "HomeRecommend(title='$title', homeRecommendDetailsList=$homeRecommendDetailsList)"
+        return "VideoDetailsData(directorName='$directorName', score='$score', pop='$pop', actorName='$actorName', typeName='$typeName', area='$area', language='$language', year='$year', summary='$summary')"
     }
-}
-
-class HomeRecommendDetails {
-    var title: String = ""
-    var imgUrl: String = ""
-    var linkUrl: String = ""
-    override fun toString(): String {
-        return "HomeRecommendList(title='$title', imgUrl='$imgUrl', linkUrl='$linkUrl')"
-    }
-
 }

@@ -8,8 +8,6 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.SET_WALLPAPER" />
-    <uses-permission android:name="android.permission.SET_WALLPAPER_HINTS" />
     <uses-permission android:name="android.permission.READ_LOGS" />
 
     <!--危险权限-->
@@ -26,6 +24,7 @@
         android:theme="@style/AppTheme"
         android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true"
+        android:largeHeap="true"
         tools:ignore="AllowBackup,UnusedAttribute">
         <activity android:name="com.xin.newvideos.ui.activity.WelcomeActivity">
             <intent-filter>

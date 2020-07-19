@@ -13,7 +13,17 @@
  * limitations under the License.
  */
 
-package com.xin.newvideos.http.bean
+package com.xin.newvideos.ui.adapter
+
+import android.view.View
+import android.widget.TextView
+import androidx.appcompat.widget.AppCompatImageView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.xin.newvideos.R
+import com.xin.newvideos.http.bean.HomeBody
 
 /**
  *   █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
@@ -26,19 +36,28 @@ package com.xin.newvideos.http.bean
  *  ░ ░    ░░░ ░ ░ ░        ░ ░░ ░
  *           ░     ░ ░      ░  ░
  * @author : Leo
- * @date : 2020/7/12 19:09
+ * @date : 2020/7/18 23:29
  * @desc :
  * @since : xinxiniscool@gmail.com
  */
-class HomeBodyType {
-    var title: String = ""
-    var subTitle: String = ""
-    var imgUrl: String = ""
-    var linkUrl: String = ""
-    var updateContent: String = ""
+class HomeAdapter(layoutId: Int, bodyList: ArrayList<HomeBody>?) :
+    BaseQuickAdapter<HomeBody, HomeAdapter.HomeViewHolder>(layoutId, bodyList) {
 
-    override fun toString(): String {
-        return "BodyTypeData(title='$title', subTitle='$subTitle', imgUrl='$imgUrl', linkUrl='$linkUrl', updateContent='$updateContent')"
+    override fun convert(holder: HomeViewHolder, item: HomeBody) {
+        with(item) {
+            Glide.with(holder.ivImg.context).load(imgUrl)
+                .apply(RequestOptions().error(R.drawable.ic_arrow_error_image)).into(holder.ivImg)
+            holder.tvContentNum.text = "\t$updateContent"
+            holder.tvTitle.text = title
+            holder.tvSubTitle.text = subTitle
+        }
+    }
+
+    class HomeViewHolder(view: View) : BaseViewHolder(view) {
+        val ivImg: AppCompatImageView = view.findViewById(R.id.ivImg)
+        val tvContentNum: TextView = view.findViewById(R.id.tvContentNum)
+        val tvTitle: TextView = view.findViewById(R.id.tvTitle)
+        val tvSubTitle: TextView = view.findViewById(R.id.tvSubTitle)
     }
 
 }
