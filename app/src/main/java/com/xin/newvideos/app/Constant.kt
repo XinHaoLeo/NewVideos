@@ -35,6 +35,9 @@ object Constant {
 
     const val VIDEO_DETAILS_URl = "video_details_url"
     const val VIDEO_DETAILS_TITLE = "video_details_title"
+    const val VIDEO_PLAYER_URL = "video_player_url"
+    const val VIDEO_PLAYER_TITLE = "video_player_title"
+    const val HOME_DATA = "home_data"
 
     //userAgent
     val UA = arrayOf(

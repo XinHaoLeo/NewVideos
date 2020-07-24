@@ -20,7 +20,6 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.kongzue.dialog.v3.TipDialog
 import com.xin.newvideos.R
 import com.xin.newvideos.app.Constant
 import com.xin.newvideos.base.BaseMvpFragment
@@ -65,7 +64,7 @@ class HomeFragment : BaseMvpFragment<HomeContract.View, HomePresenter>(), HomeCo
 
     @SuppressLint("InflateParams")
     override fun initData() {
-        TipDialog.showWait(mActivity, "小鑫正在为您努力加载中...").setTipTime(5000)
+        showTipDialog()
         mPresenter.getHomeData()
         with(rvHome) {
             layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
@@ -81,11 +80,18 @@ class HomeFragment : BaseMvpFragment<HomeContract.View, HomePresenter>(), HomeCo
         }
         rvHome.adapter = mHomeAdapter
         mHomeAdapter.setOnItemClickListener { _, _, position ->
-            val intent = Intent(mActivity, VideoDetailsActivity::class.java)
-            intent.putExtra(Constant.VIDEO_DETAILS_URl, mHomeAdapter.getItem(position).linkUrl)
-            intent.putExtra(Constant.VIDEO_DETAILS_TITLE, mHomeAdapter.getItem(position).title)
-            startActivity(intent)
+            startVideoDetailsActivity(
+                mHomeAdapter.getItem(position).linkUrl,
+                mHomeAdapter.getItem(position).title
+            )
         }
+    }
+
+    private fun startVideoDetailsActivity(url: String, title: String) {
+        val intent = Intent(mActivity, VideoDetailsActivity::class.java)
+        intent.putExtra(Constant.VIDEO_DETAILS_URl, url)
+        intent.putExtra(Constant.VIDEO_DETAILS_TITLE, title)
+        startActivity(intent)
     }
 
     override fun lazyLoadData() {
@@ -93,7 +99,7 @@ class HomeFragment : BaseMvpFragment<HomeContract.View, HomePresenter>(), HomeCo
     }
 
     override fun showHomeData(homeData: HomeData) {
-        TipDialog.dismiss()
+        disMissTipDialog()
         mHomeData = homeData
         mHomeAdapter.setNewInstance(mHomeData.homeBodyList)
         initBanner(mHomeData)
@@ -120,7 +126,7 @@ class HomeFragment : BaseMvpFragment<HomeContract.View, HomePresenter>(), HomeCo
             setDelayTime(homeData.homeBannerList.size * 400)
             setIndicatorGravity(BannerConfig.CENTER)
             setOnBannerListener {
-
+                startVideoDetailsActivity(bannerUrl[it], bannerTitles[it])
             }
             start()
         }

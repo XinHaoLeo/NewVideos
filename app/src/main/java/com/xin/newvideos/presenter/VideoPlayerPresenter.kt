@@ -13,13 +13,13 @@
  * limitations under the License.
  */
 
-package com.xin.newvideos.contract
+package com.xin.newvideos.presenter
 
-import com.xin.newvideos.base.IPresenter
-import com.xin.newvideos.base.IView
-import com.xin.newvideos.http.bean.VideoDetailsData
+import com.xin.newvideos.base.BasePresenter
+import com.xin.newvideos.contract.VideoPlayerContract
 
 /**
+ *
  *   █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
  * ▓██   ▒ ██  ▓██▒▒██▀ ▀█   ██▄█▒        ██╔══██╗██║   ██║██╔════╝
  * ▒████ ░▓██  ▒██░▒▓█    ▄ ▓███▄░        ██████╔╝██║   ██║██║  ███╗
@@ -29,18 +29,10 @@ import com.xin.newvideos.http.bean.VideoDetailsData
  *  ░     ░░▒░ ░ ░   ░  ▒   ░ ░▒ ▒░
  *  ░ ░    ░░░ ░ ░ ░        ░ ░░ ░
  *           ░     ░ ░      ░  ░
- * @author : Leo
- * @date : 2020/7/19 18:15
- * @desc :
- * @since : xinxiniscool@gmail.com
+ *@author : Leo
+ *@date : 2020/7/21 18:30
+ *@since : xinxiniscool@gmail.com
+ *@desc :
  */
-interface VideoDetailsContract {
-
-    interface View : IView {
-        fun showVideoDetailsData(videoDetailsData: VideoDetailsData)
-    }
-
-    interface Presenter : IPresenter<View> {
-        fun getVideoDetailsData(url: String)
-    }
-}
+class VideoPlayerPresenter : BasePresenter<VideoPlayerContract.View>(),
+    VideoPlayerContract.Presenter

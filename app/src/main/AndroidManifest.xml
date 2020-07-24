@@ -16,27 +16,52 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
+        android:name=".app.MyApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true"
-        android:largeHeap="true"
         tools:ignore="AllowBackup,UnusedAttribute">
-        <activity android:name="com.xin.newvideos.ui.activity.WelcomeActivity">
+        <activity
+            android:name="com.xin.newvideos.ui.activity.WelcomeActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.xin.newvideos.ui.activity.MainActivity" />
-        <activity android:name="com.xin.newvideos.ui.activity.DisclaimerActivity" />
-        <activity android:name="com.xin.newvideos.ui.activity.PrivacyActivity" />
-        <activity android:name="com.xin.newvideos.ui.activity.SplashActivity" />
+        <activity
+            android:name="com.xin.newvideos.ui.activity.MainActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.xin.newvideos.ui.activity.DisclaimerActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.xin.newvideos.ui.activity.PrivacyActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.xin.newvideos.ui.activity.SplashActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.VideoDetailsActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.VideoPlayerActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

@@ -13,13 +13,15 @@
  * limitations under the License.
  */
 
-package com.xin.newvideos.contract
+package com.xin.newvideos.ext
 
-import com.xin.newvideos.base.IPresenter
-import com.xin.newvideos.base.IView
-import com.xin.newvideos.http.bean.VideoDetailsData
+import android.content.Context
+import android.content.Intent
+import com.xin.newvideos.app.Constant
+import com.xin.newvideos.ui.activity.VideoPlayerActivity
 
 /**
+ *
  *   █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
  * ▓██   ▒ ██  ▓██▒▒██▀ ▀█   ██▄█▒        ██╔══██╗██║   ██║██╔════╝
  * ▒████ ░▓██  ▒██░▒▓█    ▄ ▓███▄░        ██████╔╝██║   ██║██║  ███╗
@@ -29,18 +31,14 @@ import com.xin.newvideos.http.bean.VideoDetailsData
  *  ░     ░░▒░ ░ ░   ░  ▒   ░ ░▒ ▒░
  *  ░ ░    ░░░ ░ ░ ░        ░ ░░ ░
  *           ░     ░ ░      ░  ░
- * @author : Leo
- * @date : 2020/7/19 18:15
- * @desc :
- * @since : xinxiniscool@gmail.com
+ *@author : Leo
+ *@date : 2020/7/21 14:37
+ *@since : xinxiniscool@gmail.com
+ *@desc :
  */
-interface VideoDetailsContract {
-
-    interface View : IView {
-        fun showVideoDetailsData(videoDetailsData: VideoDetailsData)
-    }
-
-    interface Presenter : IPresenter<View> {
-        fun getVideoDetailsData(url: String)
-    }
+fun Context.startVideoPlayerActivity(title: String, url: String) {
+    val intent = Intent(this, VideoPlayerActivity::class.java)
+    intent.putExtra(Constant.VIDEO_PLAYER_URL, url)
+    intent.putExtra(Constant.VIDEO_PLAYER_TITLE, title)
+    startActivity(intent)
 }

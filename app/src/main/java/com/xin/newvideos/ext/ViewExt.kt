@@ -13,13 +13,12 @@
  * limitations under the License.
  */
 
-package com.xin.newvideos.contract
+package com.xin.newvideos.ext
 
-import com.xin.newvideos.base.IPresenter
-import com.xin.newvideos.base.IView
-import com.xin.newvideos.http.bean.VideoDetailsData
+import android.view.View
 
 /**
+ *
  *   █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
  * ▓██   ▒ ██  ▓██▒▒██▀ ▀█   ██▄█▒        ██╔══██╗██║   ██║██╔════╝
  * ▒████ ░▓██  ▒██░▒▓█    ▄ ▓███▄░        ██████╔╝██║   ██║██║  ███╗
@@ -29,18 +28,28 @@ import com.xin.newvideos.http.bean.VideoDetailsData
  *  ░     ░░▒░ ░ ░   ░  ▒   ░ ░▒ ▒░
  *  ░ ░    ░░░ ░ ░ ░        ░ ░░ ░
  *           ░     ░ ░      ░  ░
- * @author : Leo
- * @date : 2020/7/19 18:15
- * @desc :
- * @since : xinxiniscool@gmail.com
+ *@author : Leo
+ *@date : 2020/7/21 19:15
+ *@since : xinxiniscool@gmail.com
+ *@desc :
  */
-interface VideoDetailsContract {
 
-    interface View : IView {
-        fun showVideoDetailsData(videoDetailsData: VideoDetailsData)
-    }
-
-    interface Presenter : IPresenter<View> {
-        fun getVideoDetailsData(url: String)
+/**
+ * 不管在何种情况下点击事件都是在主线程中处理
+ *
+ * @param delay 默认1秒
+ *
+ */
+var lastClickTime = 0L
+fun View.setOnClickNoRepeat(delay: Long = 1000L, action: (View) -> Unit) {
+    launchUi {
+        setOnClickListener {
+            val currentTime = System.currentTimeMillis()
+            if (lastClickTime != 0L && (currentTime - lastClickTime < delay)) {
+                return@setOnClickListener
+            }
+            lastClickTime = currentTime
+            action(it)
+        }
     }
 }

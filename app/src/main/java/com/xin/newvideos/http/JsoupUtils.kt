@@ -104,11 +104,80 @@ object JsoupUtils {
         return homeData
     }
 
-    fun parseVideoDetailsData(document: Document){
+    fun parseVideoDetailsData(document: Document): VideoDetailsData {
+        val videoDetailsData = VideoDetailsData()
+        val imgElements = document.getElementsByClass("details-con1")
+        val imgUrl = imgElements.select("img[data-url]").first().attr("data-url")
+        val imgLinkUrl = Constant.BASE_URL + imgElements.select("a[href]").first().attr("href")
         val detailsContentElements = document.getElementsByClass("synopsis")
-        val pZeroElement = detailsContentElements.select("p")[0]
-        val directorName = pZeroElement.select("a[target]").text()
-        val score = pZeroElement.select("em").first().text()
-        val pop = pZeroElement.getElementById("hits").text()
+        val pOneElement = detailsContentElements.select("p")[0]
+        val directorName = pOneElement.select("a[target]").text()
+        val score = pOneElement.select("em").first().text()
+        val pop = pOneElement.getElementById("hits").text()
+        val pTwoElement = detailsContentElements.select("p")[1]
+        val actorName = pTwoElement.select("a[target]").text()
+        val pThreeElement = detailsContentElements.select("p")[2]
+        val typeName = pThreeElement.select("a[href]").first().text()
+        for (pThreeData in pThreeElement.select("a[target]")) {
+            when {
+                pThreeData.select("a[href]").attr("href").contains("area") -> {
+                    val area = pThreeData.text()
+                    videoDetailsData.area = area
+//                    Log.d(TAG, "parseVideoDetailsData:area=$area")
+                }
+                pThreeData.select("a[href]").attr("href").contains("lang") -> {
+                    val language = pThreeData.text()
+                    videoDetailsData.language = language
+//                    Log.d(TAG, "parseVideoDetailsData:language=$language")
+                }
+                pThreeData.select("a[href]").attr("href").contains("year") -> {
+                    val year = pThreeData.text()
+                    videoDetailsData.year = year
+//                    Log.d(TAG, "parseVideoDetailsData:year=$year")
+                }
+            }
+        }
+        var summary = detailsContentElements.select("p[class]").select("span").text()
+        summary += detailsContentElements.select("p[class]").text()
+//        Log.d(TAG, "parseVideoDetailsData:imgUrl=$imgUrl")
+//        Log.d(TAG, "parseVideoDetailsData:imgLinkUrl=$imgLinkUrl")
+//        Log.d(TAG, "parseVideoDetailsData:directorName=$directorName")
+//        Log.d(TAG, "parseVideoDetailsData:score=$score")
+//        Log.d(TAG, "parseVideoDetailsData:pop=$pop")
+//        Log.d(TAG, "parseVideoDetailsData:actorName=$actorName")
+//        Log.d(TAG, "parseVideoDetailsData:typeName=$typeName")
+//        Log.d(TAG, "parseVideoDetailsData:summary=$summary")
+        videoDetailsData.imgUrl = imgUrl
+        videoDetailsData.imgLinkUrl = imgLinkUrl
+        videoDetailsData.directorName = directorName
+        videoDetailsData.score = score
+        videoDetailsData.pop = pop
+        videoDetailsData.actorName = actorName
+        videoDetailsData.typeName = typeName
+        videoDetailsData.summary = summary
+        val playerTypeList = ArrayList<PlayerType>()
+        val playerTypeElements = document.getElementsByClass("details-con2-body")
+        for (data in playerTypeElements) {
+            val playerType = PlayerType()
+            val playerTypeName = data.getElementsByClass("active-style8").text()
+//            Log.d(TAG, "parseVideoDetailsData:playerTypeName=$playerTypeName")
+            playerType.typeName = playerTypeName
+            val videoCountList = ArrayList<VideoCount>()
+            val videoCountElements = data.getElementsByClass("details-con2-list").select("li")
+            for (videoData in videoCountElements) {
+                val videoCount = VideoCount()
+                val countTitle = videoData.select("a[data-num]").text()
+                val countUrl = Constant.BASE_URL + videoData.select("a[href]").attr("href")
+//                Log.d(TAG, "parseVideoDetailsData:countTitle=$countTitle")
+//                Log.d(TAG, "parseVideoDetailsData:countUrl=$countUrl")
+                videoCount.countTitle = countTitle
+                videoCount.countUrl = countUrl
+                videoCountList.add(videoCount)
+            }
+            playerType.videoCount = videoCountList
+            playerTypeList.add(playerType)
+        }
+        videoDetailsData.playerType = playerTypeList
+        return videoDetailsData
     }
 }

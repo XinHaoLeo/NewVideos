@@ -16,8 +16,11 @@
 package com.xin.newvideos.app
 
 import android.app.Application
+import android.content.ComponentCallbacks2
 import cat.ereza.customactivityoncrash.config.CaocConfig
+import com.bumptech.glide.Glide
 import com.xin.newvideos.ui.activity.WelcomeActivity
+
 
 /**
  *
@@ -36,6 +39,7 @@ import com.xin.newvideos.ui.activity.WelcomeActivity
  *@desc :
  */
 class MyApp : Application() {
+    var isFirstRun = true
 
     companion object {
         private lateinit var instance: MyApp
@@ -60,6 +64,17 @@ class MyApp : Application() {
             .eventListener(null) //允许你指定事件侦听器，以便在库显示错误活动 default: null
             .apply()
     }
+    override fun onTrimMemory(level: Int) {
+        super.onTrimMemory(level)
+        if (level == ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN) {
+            Glide.get(this).clearMemory()
+        }
+        Glide.get(this).trimMemory(level)
+    }
 
+    override fun onLowMemory() {
+        super.onLowMemory()
+        Glide.get(this).clearMemory()
+    }
 
 }

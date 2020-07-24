@@ -22,6 +22,7 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import com.blankj.utilcode.util.ToastUtils
 import com.google.android.material.snackbar.Snackbar
+import com.kongzue.dialog.v3.TipDialog
 
 /**
  *
@@ -81,6 +82,14 @@ abstract class BaseSimpleActivity : AppCompatActivity() {
         snackBar.setAction(actionText) {
             snackBar.dismiss()
         }.show()
+    }
+
+    protected fun showTipDialog(){
+        TipDialog.showWait(this, "小鑫正在为您努力加载中...").setTipTime(5000)
+    }
+
+    protected fun disMissTipDialog(){
+        TipDialog.dismiss()
     }
 
 }

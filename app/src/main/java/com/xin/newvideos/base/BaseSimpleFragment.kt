@@ -26,6 +26,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import com.blankj.utilcode.util.ToastUtils
 import com.google.android.material.snackbar.Snackbar
+import com.kongzue.dialog.v3.TipDialog
 
 /**
  *   █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
@@ -125,5 +126,14 @@ abstract class BaseSimpleFragment : Fragment() {
             snackBar.dismiss()
         }.show()
     }
+
+    protected fun showTipDialog(){
+        TipDialog.showWait(mActivity, "小鑫正在为您努力加载中...").setTipTime(5000)
+    }
+
+    protected fun disMissTipDialog(){
+        TipDialog.dismiss()
+    }
+
 
 }

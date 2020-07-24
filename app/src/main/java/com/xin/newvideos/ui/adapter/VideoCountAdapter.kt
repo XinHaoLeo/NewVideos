@@ -13,13 +13,19 @@
  * limitations under the License.
  */
 
-package com.xin.newvideos.contract
+package com.xin.newvideos.ui.adapter
 
-import com.xin.newvideos.base.IPresenter
-import com.xin.newvideos.base.IView
-import com.xin.newvideos.http.bean.VideoDetailsData
+import android.view.View
+import android.widget.TextView
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.xin.newvideos.R
+import com.xin.newvideos.ext.setOnClickNoRepeat
+import com.xin.newvideos.ext.startVideoPlayerActivity
+import com.xin.newvideos.http.bean.VideoCount
 
 /**
+ *
  *   █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
  * ▓██   ▒ ██  ▓██▒▒██▀ ▀█   ██▄█▒        ██╔══██╗██║   ██║██╔════╝
  * ▒████ ░▓██  ▒██░▒▓█    ▄ ▓███▄░        ██████╔╝██║   ██║██║  ███╗
@@ -29,18 +35,28 @@ import com.xin.newvideos.http.bean.VideoDetailsData
  *  ░     ░░▒░ ░ ░   ░  ▒   ░ ░▒ ▒░
  *  ░ ░    ░░░ ░ ░ ░        ░ ░░ ░
  *           ░     ░ ░      ░  ░
- * @author : Leo
- * @date : 2020/7/19 18:15
- * @desc :
- * @since : xinxiniscool@gmail.com
+ *@author : Leo
+ *@date : 2020/7/21 13:57
+ *@since : xinxiniscool@gmail.com
+ *@desc :
  */
-interface VideoDetailsContract {
+class VideoCountAdapter(layoutId: Int, videoCountList: ArrayList<VideoCount>?) :
+    BaseQuickAdapter<VideoCount, VideoCountAdapter.VideoCountViewHolder>(layoutId, videoCountList) {
 
-    interface View : IView {
-        fun showVideoDetailsData(videoDetailsData: VideoDetailsData)
+    var mTitle: String = ""
+    override fun convert(holder: VideoCountViewHolder, item: VideoCount) {
+        holder.tvVideoCount.text = item.countTitle
+        holder.tvVideoCount.setOnClickNoRepeat {
+            context.startVideoPlayerActivity(mTitle, item.countUrl)
+        }
     }
 
-    interface Presenter : IPresenter<View> {
-        fun getVideoDetailsData(url: String)
+    fun setTitle(title: String) {
+        mTitle = title
     }
+
+    class VideoCountViewHolder(view: View) : BaseViewHolder(view) {
+        val tvVideoCount: TextView = view.findViewById(R.id.tvVideoCount)
+    }
+
 }

@@ -17,9 +17,9 @@ package com.xin.newvideos.contract
 
 import com.xin.newvideos.base.IPresenter
 import com.xin.newvideos.base.IView
-import com.xin.newvideos.http.bean.VideoDetailsData
 
 /**
+ *
  *   █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
  * ▓██   ▒ ██  ▓██▒▒██▀ ▀█   ██▄█▒        ██╔══██╗██║   ██║██╔════╝
  * ▒████ ░▓██  ▒██░▒▓█    ▄ ▓███▄░        ██████╔╝██║   ██║██║  ███╗
@@ -29,18 +29,13 @@ import com.xin.newvideos.http.bean.VideoDetailsData
  *  ░     ░░▒░ ░ ░   ░  ▒   ░ ░▒ ▒░
  *  ░ ░    ░░░ ░ ░ ░        ░ ░░ ░
  *           ░     ░ ░      ░  ░
- * @author : Leo
- * @date : 2020/7/19 18:15
- * @desc :
- * @since : xinxiniscool@gmail.com
+ *@author : Leo
+ *@date : 2020/7/21 18:29
+ *@since : xinxiniscool@gmail.com
+ *@desc :
  */
-interface VideoDetailsContract {
+interface VideoPlayerContract {
+    interface View : IView
 
-    interface View : IView {
-        fun showVideoDetailsData(videoDetailsData: VideoDetailsData)
-    }
-
-    interface Presenter : IPresenter<View> {
-        fun getVideoDetailsData(url: String)
-    }
+    interface Presenter : IPresenter<View>
 }

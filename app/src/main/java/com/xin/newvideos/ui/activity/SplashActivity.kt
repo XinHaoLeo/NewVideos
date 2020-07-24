@@ -19,8 +19,11 @@ import android.content.Intent
 import android.os.CountDownTimer
 import androidx.core.content.ContextCompat
 import com.xin.newvideos.R
+import com.xin.newvideos.app.MyApp
 import com.xin.newvideos.base.BaseSimpleActivity
+import com.xin.newvideos.ext.setOnClickNoRepeat
 import com.xin.newvideos.util.StatusBarUtils
+import com.xin.newvideos.widget.ModelSVG
 import kotlinx.android.synthetic.main.activity_splash.*
 
 /**
@@ -51,6 +54,11 @@ class SplashActivity : BaseSimpleActivity() {
     }
 
     override fun initData() {
+        if (MyApp.getInstance().isFirstRun) {
+            setSvg(ModelSVG.values()[4])
+        } else {
+            jumpToMainActivity()
+        }
         countDownTimer = object : CountDownTimer(5000, 1000) {
             override fun onFinish() {
                 jumpToMainActivity()
@@ -64,13 +72,25 @@ class SplashActivity : BaseSimpleActivity() {
         //启动倒计时
         countDownTimer.start()
 
-        tvJump.setOnClickListener {
+        tvJump.setOnClickNoRepeat {
             jumpToMainActivity()
         }
     }
 
+
+    private fun setSvg(modelSvg: ModelSVG) {
+        animatedSvgView.setGlyphStrings(*modelSvg.glyphs)
+        animatedSvgView.setFillColors(modelSvg.colors)
+        animatedSvgView.setViewportSize(modelSvg.width, modelSvg.height)
+        animatedSvgView.setTraceResidueColor(0x32000000)
+        animatedSvgView.setTraceColors(modelSvg.colors)
+        animatedSvgView.rebuildGlyphData()
+        animatedSvgView.start()
+    }
+
     private fun jumpToMainActivity() {
         startActivity(Intent(this, MainActivity::class.java))
+        MyApp.getInstance().isFirstRun = false
         finish()
     }
 

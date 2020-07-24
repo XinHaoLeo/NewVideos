@@ -31,6 +31,9 @@ package com.xin.newvideos.http.bean
  * @since : xinxiniscool@gmail.com
  */
 class VideoDetailsData {
+    var title: String = ""
+    var imgUrl: String = ""
+    var imgLinkUrl: String = ""
     var directorName: String = ""
     var score: String = ""
     var pop: String = ""
@@ -40,7 +43,29 @@ class VideoDetailsData {
     var language: String = ""
     var year: String = ""
     var summary: String = ""
+    lateinit var playerType: ArrayList<PlayerType>
     override fun toString(): String {
-        return "VideoDetailsData(directorName='$directorName', score='$score', pop='$pop', actorName='$actorName', typeName='$typeName', area='$area', language='$language', year='$year', summary='$summary')"
+        return "VideoDetailsData(title='$title', imgUrl='$imgUrl', imgLinkUrl='$imgLinkUrl', directorName='$directorName', score='$score', pop='$pop', actorName='$actorName', typeName='$typeName', area='$area', language='$language', year='$year', summary='$summary', playerType=$playerType)"
+    }
+}
+
+class PlayerType {
+    companion object {
+        const val TEXT = 1
+        const val GRID_VIEW = 2
+    }
+
+    var typeName: String = ""
+    lateinit var videoCount: ArrayList<VideoCount>
+    override fun toString(): String {
+        return "PlayerType(typeName='$typeName', videoCount=$videoCount)"
+    }
+}
+
+class VideoCount {
+    var countTitle: String = ""
+    var countUrl: String = ""
+    override fun toString(): String {
+        return "VideoCount(countTitle='$countTitle', countUrl='$countUrl')"
     }
 }

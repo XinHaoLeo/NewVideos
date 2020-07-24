@@ -17,6 +17,10 @@ package com.xin.newvideos.presenter
 
 import com.xin.newvideos.base.BasePresenter
 import com.xin.newvideos.contract.VideoDetailsContract
+import com.xin.newvideos.http.HttpUtils
+import com.xin.newvideos.http.JsoupUtils
+import com.xin.newvideos.http.OnHttpListener
+import org.jsoup.nodes.Document
 
 /**
  *   █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
@@ -37,6 +41,17 @@ class VideoDetailsPresenter : BasePresenter<VideoDetailsContract.View>(),
     VideoDetailsContract.Presenter {
 
     override fun getVideoDetailsData(url: String) {
+        mJob = HttpUtils.getVideoDetails(url, object : OnHttpListener {
 
+            override fun onSuccess(document: Document) {
+                getView()?.showVideoDetailsData(JsoupUtils.parseVideoDetailsData(document))
+            }
+
+            override fun onError(errorMsg: String) {
+                getView()?.showShortToast(errorMsg)
+                disMissDialog()
+            }
+
+        })
     }
 }

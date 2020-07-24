@@ -53,7 +53,7 @@ class MainActivity : BaseSimpleActivity() {
         showFragment("首页", 0)
     }
 
-    private fun initFragment(){
+    private fun initFragment() {
         mFragments = ArrayList()
         mFragments.add(HomeFragment())
         mFragments.add(TypeFragment())
